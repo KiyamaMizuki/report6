@@ -18,7 +18,6 @@ public class Bingo {
     }
 
     int[][] Bingo() {
-        //ArrayList<Integer> new_rand;
         ArrayList new_rand_1 = rand(1,15);
         ArrayList new_rand_2 = rand(16,30);
         ArrayList new_rand_3 = rand(31,45);
@@ -32,24 +31,18 @@ public class Bingo {
             for (int i = 0; i < 5; i++) {
 
                 if(i == 0){
-                    //new_rand_1 = rand(1,15);
                     bingocard[vertical][i] =  (int) new_rand_1.get(number);
                 }else if(i == 1){
-                    //new_rand_2 = rand(16,30);
                     bingocard[vertical][i] =  (int) new_rand_2.get(number);
                 }else if(i == 2) {
-                    //new_rand_3 = rand(31, 45);
                     bingocard[vertical][i] =  (int) new_rand_3.get(number);
                 }else if(i == 3) {
-                    //new_rand_4 = rand(46, 60);
                     bingocard[vertical][i] =  (int) new_rand_4.get(number);
                 }else {
-                    //new_rand_5 = rand(61,75);
                     bingocard[vertical][i] =  (int) new_rand_5.get(number);
                 }
 
-                //bingocard[vertical][i] =  (int) new_rand.get(number);
-                //number++;
+
                 int value = bingocard[vertical][i];
                 System.out.print("|" + String.format("%02d", value) + "|");
 
@@ -64,32 +57,84 @@ public class Bingo {
     void Bingo_ball(){
 
         boolean Judg = false;
+        boolean line = true;
         int number = 0;
-        ArrayList rand = rand(1,75);
-        int ball = (int) rand.get(number);
-        System.out.println("n回目の数字は" + ball + "です。");
+        ArrayList rands = rand(1,75);
+        int play = 1;
 
-        
-        for (int vertical = 0; vertical < 5; vertical++) {
-            for (int i = 0; i < 5; i++) {
-                if(card[vertical][i] == ball) {
-                    card[vertical][i] = 0;
-                    Judg = true;
+        while (line) {
+            int ball = (int) rands.get(number);
+            System.out.println(play + "回目の数字は" + ball + "です。");
+            play++;
+            for (int vertical = 0; vertical < 5; vertical++) {
+                for (int i = 0; i < 5; i++) {
+                    if (card[vertical][i] == ball) {
+                        card[vertical][i] = 0;
+                        Judg = true;
+                    }
+                    int value = card[vertical][i];
+                    System.out.print("|" + String.format("%02d", value) + "|");
                 }
-
-                int value = card[vertical][i];
-                System.out.print("|" + String.format("%02d", value) + "|");
+                System.out.println(" ");
             }
-            System.out.println(" ");
+            if (Judg) {
+                System.out.println("おめでとうございます。");
+            } else {
+                System.out.println("該当する数字はありませんでした。");
+            }
+            number++;
+            System.out.println(number);
+
+
+            //横のビンゴ
+            for (int i = 0; i < 5; i++) {
+                int count = 0;
+                for (int j = 0; j < 5; j++) {
+                    if (card[i][j] == 0) {
+                        count++;
+                        if (count == 5) {
+                            line = false;
+                        }
+                    }
+                }
+            }
+            //縦のビンゴ
+            for (int i = 0; i < 5; i++) {
+                int count = 0;
+                for (int j = 0; j < 5; j++) {
+                    if (card[j][i] == 0) {
+                        count++;
+                        if (count == 5) {
+                            line = false;
+                        }
+                    }
+                }
+            }
+            //斜めのビンゴ１
+            int j = 0;
+            int count = 0;
+            for (int i = 0; i < 5; i++) {
+                if (card[i][j] == 0) {
+                    count++;
+                    if (count == 5) {
+                        line = false;
+                    }
+                }
+                j++;
+            }
+            //斜めのビンゴ２
+            int n = 4;
+            int c = 0;
+            for (int i = 0; i < 5; i++) {
+                if (card[i][n] == 0) {
+                    c++;
+                    if (c == 5) {
+                        line = false;
+                    }
+                    n--;
+                }
+            }
         }
-        if(Judg) {
-            System.out.println("おめでとうございます。");
-        }else{
-            System.out.print("該当する数字はありませんでした。");
-        }
-
-
-
-
+        System.out.println("ゲーム終了です。");
     }
 }

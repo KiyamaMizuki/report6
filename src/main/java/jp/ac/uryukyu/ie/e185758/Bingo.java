@@ -3,20 +3,37 @@ package jp.ac.uryukyu.ie.e185758;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * ビンゴゲームを生成するクラス
+ */
+
 public class Bingo {
+
+    /**
+     * 最初に作ったビンゴカードの値を入れる変数
+     */
     int[][] card;
+
+    /**
+     *
+     * @param min
+     * @param max
+     * @retur min~maxの範囲の数字をシャッフルした配列
+     */
 
     ArrayList<Integer> rand(int min,int max) {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        // listに値を入れる。この段階では昇順
         for (int i = min; i <= max; i++) {
             list.add(i);
         }
-        // シャッフルして、順番を変える
         Collections.shuffle(list);
         return list;
     }
 
+    /**
+     * 上部で生成したrandメソッドを使用して5×5のビンゴカードを作るクラス
+     * @return　5×5のビンゴカード
+     */
     int[][] Bingo() {
         ArrayList new_rand_1 = rand(1,15);
         ArrayList new_rand_2 = rand(16,30);
@@ -42,7 +59,6 @@ public class Bingo {
                     bingocard[vertical][i] =  (int) new_rand_5.get(number);
                 }
 
-
                 int value = bingocard[vertical][i];
                 System.out.print("|" + String.format("%02d", value) + "|");
 
@@ -54,15 +70,19 @@ public class Bingo {
         return card;
     }
 
+    /**
+     * 「ビンゴボール」を生成し、ビンゴカードの数字と参照する。
+     * 参照した結果を出力し、下部で書かれているBingo_lineメソッドによりゲームクリアを判定する。
+     */
+
     void Bingo_ball(){
 
         boolean Judg = false;
-        boolean line = true;
         int number = 0;
         ArrayList rands = rand(1,75);
         int play = 1;
 
-        while (line) {
+        while (Bingo_line()) {
             int ball = (int) rands.get(number);
             System.out.println(play + "回目の数字は" + ball + "です。");
             play++;
@@ -83,58 +103,63 @@ public class Bingo {
                 System.out.println("該当する数字はありませんでした。");
             }
             number++;
-            System.out.println(number);
+
+            Bingo_line();
 
 
-            //横のビンゴ
-            for (int i = 0; i < 5; i++) {
-                int count = 0;
-                for (int j = 0; j < 5; j++) {
-                    if (card[i][j] == 0) {
-                        count++;
-                        if (count == 5) {
-                            line = false;
-                        }
-                    }
-                }
-            }
-            //縦のビンゴ
-            for (int i = 0; i < 5; i++) {
-                int count = 0;
-                for (int j = 0; j < 5; j++) {
-                    if (card[j][i] == 0) {
-                        count++;
-                        if (count == 5) {
-                            line = false;
-                        }
-                    }
-                }
-            }
-            //斜めのビンゴ１
-            int j = 0;
+        }
+        System.out.println("ゲーム終了です。");
+    }
+
+    /**
+     *　ゲームクリアを判定するクラス
+     * @return　ビンゴカードの縦、横、斜めいずれかの全てが０になった時のみfalseを返す。
+     */
+    boolean Bingo_line(){
+        for (int i = 0; i < 5; i++) {
             int count = 0;
-            for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 if (card[i][j] == 0) {
                     count++;
                     if (count == 5) {
-                        line = false;
+                        return false;
                     }
-                }
-                j++;
-            }
-            //斜めのビンゴ２
-            int n = 4;
-            int c = 0;
-            for (int i = 0; i < 5; i++) {
-                if (card[i][n] == 0) {
-                    c++;
-                    if (c == 5) {
-                        line = false;
-                    }
-                    n--;
                 }
             }
         }
-        System.out.println("ゲーム終了です。");
+        for (int i = 0; i < 5; i++) {
+            int count = 0;
+            for (int j = 0; j < 5; j++) {
+                if (card[j][i] == 0) {
+                    count++;
+                    if (count == 5) {
+                        return false;
+                    }
+                }
+            }
+        }
+        int j = 0;
+        int count = 0;
+        for (int i = 0; i < 5; i++) {
+            if (card[i][j] == 0) {
+                count++;
+                if (count == 5) {
+                   return false;
+                }
+            }
+            j++;
+        }
+        int n = 4;
+        int c = 0;
+        for (int i = 0; i < 5; i++) {
+            if (card[i][n] == 0) {
+                c++;
+                if (c == 5) {
+                    return false;
+                }
+                n--;
+            }
+        }
+        return true;
     }
 }

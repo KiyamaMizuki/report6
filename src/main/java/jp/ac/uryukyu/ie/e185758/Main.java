@@ -5,5 +5,6 @@ public class Main {
         Bingo bingo = new Bingo();
         bingo.Bingo();
         bingo.Bingo_ball();
+
     }
 }

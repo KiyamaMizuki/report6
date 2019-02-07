@@ -12,8 +12,12 @@ public class Bingo {
     /**
      * 最初に作ったビンゴカードの値を入れる変数
      */
-    int[][] card;
+    private int[][] card;
 
+    public int[][] setCard(int[][] test){
+        card = test;
+        return this.card;
+    }
     /**
      *
      * @param min
